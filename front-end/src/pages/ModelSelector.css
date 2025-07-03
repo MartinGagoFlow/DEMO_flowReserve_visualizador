@@ -1,0 +1,29 @@
+
+.body-model-selector{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 100dvh;
+   
+}
+
+.title-model-selector{
+    margin-top: 5rem;
+    font-size: 2.2rem;
+}
+
+.btn-selector{
+    width: 120px;
+    padding: .5rem .5rem;
+    margin-top: .5rem;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: all .5s linear;
+}
+.btn-selector:hover{
+    background-color: var(--accent-color);
+}

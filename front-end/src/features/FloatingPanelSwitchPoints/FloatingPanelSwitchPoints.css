@@ -1,0 +1,41 @@
+/* src/components/FloatingPanelSwitch.css */
+
+.floating-panel {
+    position: fixed;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    min-height: 100dvh;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 9;
+}
+
+.toggle-btn {
+    margin: 0;
+    margin-bottom: .5rem;
+    width: fit-content;
+    cursor: pointer;
+    width: 90px;
+}
+
+/* Transición suave */
+.panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: opacity 0.3s ease;
+}
+
+/* Mostrar contenido */
+.panel-content.visible {
+    opacity: 1;
+    pointer-events: auto;
+    height: auto;
+}
+
+/* Ocultar contenido visualmente, sin colapsar el contenedor */
+.panel-content.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
