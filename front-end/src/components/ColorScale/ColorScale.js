@@ -5,7 +5,7 @@ export const ColorScale = (props) => {
   if (props.colors === 'ffr') {
     return (
       <div className="color-bar-container">
-        <p className="color-bar-title">FFR</p>
+        <p className="color-bar-title">FFRct</p>
         <div className="gradient-wrapper">
           <div className="gradient-scale-ffr"></div>
           <div className="gradient-labels">

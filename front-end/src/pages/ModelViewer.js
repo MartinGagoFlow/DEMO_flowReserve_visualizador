@@ -132,7 +132,7 @@ const ModelViewer = (props) => {
   // Ref to track chart label widget handles.
   //const chartLabelWidgetHandlesRef = useRef([]);
 
-  
+
   //Labels informativas de la aplicación:
   const [labelsVisible, setLabelsVisible] = useState(true);
   const graphLabelWidgetHandlesRef = useRef([]);
@@ -291,6 +291,9 @@ const ModelViewer = (props) => {
   useEffect(() => {
     if (graphPath) {
       console.log("fetching data")
+
+      let isCancelled = false;
+
       fetch('http://127.0.0.1:5000/api/models/' + graphPath)
         .then((res) => res.text())
         .then((gexf) => {
@@ -320,6 +323,12 @@ const ModelViewer = (props) => {
           console.log("Ostium nodes data: ", dataNode);
         })
         .catch((error) => console.error("Error fetching graph data:", error));
+
+      return () => {
+        isCancelled = true;
+        clearGraphLabels();
+      };
+
     }
   }, [graphPath]);
 
@@ -380,13 +389,8 @@ const ModelViewer = (props) => {
       getClickAttributes(pickedPoint).then((attributes) => {
         if (attributes) {
           const allowedAttributes = {
-            names: 'Name',
+            names: 'Nombre',
             FFR_Corrected: model,
-            WSS: 'WSS',
-            HSR: 'HSR',
-            CDP: 'CDP',
-            velocity: 'Velocity',
-
           };
 
           let attrText = '';
@@ -402,7 +406,7 @@ const ModelViewer = (props) => {
               } else if (!isNaN(parseFloat(value))) {
                 value = parseFloat(value).toFixed(2);
               }
-              const label = key === 'FFR_Corrected' ? 'FFR' : allowedAttributes[key];
+              const label = key === 'FFR_Corrected' ? 'FFRct' : allowedAttributes[key];
               attrText += `${label}: ${value}\n`;
             }
           }
@@ -412,16 +416,16 @@ const ModelViewer = (props) => {
             value = typeof value === 'number'
               ? value.toFixed(2)
               : parseFloat(value).toFixed(2);
-            attrText += `Diameter: ${value}\n`;
+            attrText += `Diametro: ${value}\n`;
           } else if (attributes.hasOwnProperty('diameter')) {
             let value = attributes.diameter;
             value = typeof value === 'number'
               ? value.toFixed(2)
               : parseFloat(value).toFixed(2);
-            attrText += `Diameter: ${value}\n`;
+            attrText += `Diametro: ${value}\n`;
           } else if (attributes.hasOwnProperty('radius')) {
             let value = attributes.radius * 2;
-            attrText += `Diameter: ${Number(value).toFixed(2)}\n`;
+            attrText += `Diametro: ${Number(value).toFixed(2)}\n`;
           }
           const offset = [0, 0, 0];
           const elevatedPoint = [
@@ -1071,12 +1075,12 @@ const ModelViewer = (props) => {
         <div id="canvas">
           <CustomButton className="btn" onClick={handleHome} text={"Inicio"} title='Volver al inicio de la aplicación'></CustomButton>
           <button className="btn" onClick={cHandleFFR}><b>{model}</b></button>
-          <button className="btn" onClick={cHandleWSS}>WSS</button>
+          
 
           {/* Control de cámara del modelo 3D */}
           <CameraControls />
           <CustomButton text={"Centrar"} onClick={centrarImagen}></CustomButton>
-        
+
           <div id="background-checkbox">
             <CustomCheckbox
               id="toggleData"
@@ -1112,7 +1116,6 @@ const ModelViewer = (props) => {
             rendererRef={rendererRef}
             renderWindowRef={renderWindowRef}
           />
-          <BtnToggleOpacity actor={actor} renderWindowRef={renderWindowRef}></BtnToggleOpacity>
           <CustomButton onClick={clearRightClickLabel} text={"Limpiar etiquetas"}></CustomButton>
 
           {/* <h5>{model} - {folderPath}</h5> */}
